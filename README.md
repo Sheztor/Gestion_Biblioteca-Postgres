@@ -17,19 +17,19 @@ Indique las herramientas utilizadas.
 
 Creación de la `base de datos` para la biblioteca
 
-```postgresql
+```sql
 CREATE DATABASE biblioteca;
 ```
 
 Creación del `esquema` de la base de datos para la biblioteca
 
-```postgresql
+```sql
 CREATE SCHEMA biblioteca;
 ```
 
 `Tablas`
 
-```postgresql
+```sql
 CREATE TABLE biblioteca.categorias (
   id_categoria SERIAL PRIMARY KEY,
   nombre_categoria VARCHAR(255) NOT NULL,
@@ -75,7 +75,7 @@ CREATE TABLE biblioteca.multas (
 
 #### stored procedures `agregar_libro`
 
-```postgresql
+```sql
 CREATE OR REPLACE PROCEDURE biblioteca.agregar_libro(
   IN titulo VARCHAR(255),
   IN autor VARCHAR(255),
@@ -92,13 +92,13 @@ $$ LANGUAGE plpgsql;
 
 #### Ejemplo de uso
 
-```postgresql
+```sql
 CALL biblioteca.agregar_libro('El Principito', 'Antoine de Saint-Exupéry', 1943, 69);
 ```
 
 #### stored procedures `actualizar_libro`
 
-```postgresql
+```sql
 CREATE OR REPLACE PROCEDURE biblioteca.actualizar_libro(
 	IN libro_id INT,
 	IN nuevo_titulo VARCHAR(255),
@@ -120,13 +120,13 @@ $$ LANGUAGE plpgsql;
 
 #### Ejemplo de uso
 
-```postgresql
+```sql
 CALL biblioteca.actualizar_libro(1, 'Cien años de soledad', 'Gabriel García Márquez', 1967, 13);
 ```
 
 #### stored procedures `eliminar_libro`
 
-```postgresql
+```sql
 CREATE OR REPLACE PROCEDURE biblioteca.eliminar_libro(
   IN libro_id INT
 )
@@ -140,13 +140,13 @@ $$ LANGUAGE plpgsql;
 
 #### Ejemplo de uso
 
-```postgresql
+```sql
 CALL biblioteca.eliminar_libro(1);
 ```
 
 #### stored procedures `agregar_usuario`
 
-```postgresql
+```sql
 CREATE OR REPLACE PROCEDURE biblioteca.agregar_usuario(
   IN nombre VARCHAR(100),
   IN correo VARCHAR(100)
@@ -161,13 +161,13 @@ $$ LANGUAGE plpgsql;
 
 #### Ejemplo de uso
 
-```postgresql
+```sql
 CALL biblioteca.agregar_usuario('Ana García', 'ana.garcia@correo.com');
 ```
 
 #### stored procedures `actualizar_usuario`
 
-```postgresql
+```sql
 CREATE OR REPLACE PROCEDURE biblioteca.actualizar_usuario(
   IN usuario_id INT,
   IN nuevo_nombre VARCHAR(100),
@@ -185,13 +185,13 @@ $$ LANGUAGE plpgsql;
 
 #### Ejemplo de uso
 
-```postgresql
+```sql
 CALL biblioteca.actualizar_usuario(1, 'María López', 'maria.lopez@correo.com');
 ```
 
 #### stored procedures `eliminar_usuario`
 
-```postgresql
+```sql
 CREATE OR REPLACE PROCEDURE biblioteca.eliminar_usuario(
   IN usuario_id INT
 )
@@ -205,7 +205,7 @@ $$ LANGUAGE plpgsql;
 
 #### Ejemplo de uso
 
-```postgresql
+```sql
 CALL biblioteca.eliminar_usuario(1);
 ```
 
@@ -213,7 +213,7 @@ CALL biblioteca.eliminar_usuario(1);
 
 Creación de la función
 
-```postgresql
+```sql
 CREATE OR REPLACE FUNCTION biblioteca.calcular_monto_multas_usuario(usuario_id INT)
 RETURNS DECIMAL(10, 2)
 AS
@@ -237,13 +237,13 @@ LANGUAGE PLPGSQL;
 
 #### Ejemplo de uso
 
-```postgresql
+```sql
 SELECT biblioteca.calcular_monto_multas_usuario(2);
 ```
 
 #### `Inserts` de datos para poner a prueba el punto `2.2` (y para despues)
 
-```postgresql
+```sql
 -- insert de datos para poder hacer la función para calcular el monto total de multas de un usuario
 INSERT INTO biblioteca.categorias (nombre_categoria, descripcion)
 VALUES
@@ -308,7 +308,7 @@ select * from biblioteca.multas
 
 - 3.1 Utiliza un cursor para calcular la cantidad total de libros prestados actualmente.
 
-```postgresql
+```sql
 SELECT COUNT(*) AS "Total Libros Prestados"
 FROM biblioteca.prestamos
 WHERE fecha_devolucion IS NULL;
@@ -323,7 +323,7 @@ WHERE fecha_devolucion IS NULL;
 
 `Función` que realiza la acción de actualizar el inventario
 
-```postgresql
+```sql
 CREATE FUNCTION biblioteca.actualizar_inventario()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -337,7 +337,7 @@ $$ LANGUAGE plpgsql;
 
 `Trigger` que llamará la función que actualiza el inventario cuando se inserta un nuevo préstamo
 
-```postgresql
+```sql
 CREATE TRIGGER actualizar_inventario
 AFTER INSERT ON biblioteca.prestamos
 FOR EACH ROW
@@ -346,7 +346,7 @@ EXECUTE PROCEDURE biblioteca.actualizar_inventario();
 
 #### Ejemplo de acción
 
-```postgresql
+```sql
 -- Insert de un prestamo
 INSERT INTO biblioteca.prestamos (id_libro, id_usuario, fecha_prestamo)
 VALUES (1, 2, '2024-03-18');
@@ -363,7 +363,7 @@ WHERE id_libro = 1;
 
 CTE llamada `MultasUsuario` que se une a las tablas `biblioteca.usuarios`, `biblioteca.prestamos` y `biblioteca.multas`
 
-```postgresql
+```sql
 WITH MultasUsuario AS (
   SELECT
     u.id_usuario,
@@ -394,7 +394,7 @@ WHERE
 
 - 6.1 Utiliza el operador HAVING para encontrar los usuarios que tienen más de 3 libros prestados actualmente.
 
-```postgresql
+```sql
 SELECT u.id_usuario, u.nombre, COUNT(*) AS libros_prestados
 FROM biblioteca.usuarios u
 INNER JOIN biblioteca.prestamos p ON u.id_usuario = p.id_usuario
@@ -406,7 +406,7 @@ HAVING COUNT(*) > 3;
 
   - 6.2.1 `BETWEEN`
 
-    ```postgresql
+    ```sql
     -- Determinar cuántos libros se han publicado entre 2015 y 2020
     SELECT COUNT(*) AS total_libros
     FROM biblioteca.libros
@@ -415,7 +415,7 @@ HAVING COUNT(*) > 3;
 
   - 6.2.2 `HAVING`
 
-    ```postgresql
+    ```sql
     -- Determinar que autores tienen 2 o más libros con un inventario mayor a 50?
     SELECT autor, COUNT(*) AS total_libros
     FROM biblioteca.libros
@@ -425,7 +425,7 @@ HAVING COUNT(*) > 3;
 
   - 6.2.3 `LIKE`
 
-    ```postgresql
+    ```sql
     -- Determinar cuales libros tienen un título que comienza con "El"
     SELECT titulo
     FROM biblioteca.libros
@@ -434,7 +434,7 @@ HAVING COUNT(*) > 3;
 
   - 6.2.4 `IN`
 
-    ```postgresql
+    ```sql
     -- Determinar cuales usuarios tienen préstamos con libros de Gabriel García Márquez
     SELECT nombre, correo
     FROM biblioteca.usuarios u
@@ -445,7 +445,7 @@ HAVING COUNT(*) > 3;
 
   - 6.2.5 `EXISTS`
 
-    ```postgresql
+    ```sql
     -- Saber si hay usuarios que no tienen préstamos
     SELECT EXISTS (
       SELECT *
@@ -457,7 +457,7 @@ HAVING COUNT(*) > 3;
 
   - 6.2.6 `DISTINCT`
 
-    ```postgresql
+    ```sql
     -- Saber cuántos autores distintos hay en la biblioteca
     SELECT COUNT(DISTINCT autor) AS total_autores
     FROM biblioteca.libros;
@@ -465,7 +465,7 @@ HAVING COUNT(*) > 3;
 
   - 6.2.7 `UNION`
 
-    ```postgresql
+    ```sql
     -- Saber que libros están prestados o tienen un inventario menor a 10
     SELECT DISTINCT titulo
     FROM biblioteca.libros l
@@ -480,7 +480,7 @@ HAVING COUNT(*) > 3;
 
     `MIN`
 
-    ```postgresql
+    ```sql
     -- Obtener el año de publicación más antiguo
     SELECT MIN(anio_publicacion) AS anio_minimo
     FROM biblioteca.libros;
@@ -488,7 +488,7 @@ HAVING COUNT(*) > 3;
 
     `MAX`
 
-    ```postgresql
+    ```sql
     -- Obtener el libro con mayor inventario
     SELECT l.titulo AS Titulo, l.inventario AS max_inventario
     FROM biblioteca.libros l
@@ -497,7 +497,7 @@ HAVING COUNT(*) > 3;
 
     `COUNT`
 
-    ```postgresql
+    ```sql
     -- Contar el número total de préstamos
     SELECT COUNT(*) AS total_prestamos
     FROM biblioteca.prestamos;
@@ -505,7 +505,7 @@ HAVING COUNT(*) > 3;
 
     `AVG`
 
-    ```postgresql
+    ```sql
     -- Obtener el promedio de libros prestados por usuario
     SELECT AVG(prestamos_por_usuario) AS promedio_prestamos
     FROM (
@@ -518,7 +518,7 @@ HAVING COUNT(*) > 3;
 
     `SUM`
 
-    ```postgresql
+    ```sql
     -- Obtener la suma total de los montos de multas en la tabla
     SELECT SUM(monto) AS suma_total_multas
     FROM biblioteca.multas;
@@ -528,7 +528,7 @@ HAVING COUNT(*) > 3;
 
 - Implementa la lógica necesaria para que los libros tengan una fecha de devolución estimada, y que el sistema calcule automáticamente las multas si un libro se devuelve después de la fecha límite.
 
-  ```postgresql
+  ```sql
   -- Función que será utilizada para calcular la feha limite de devolución
   CREATE OR REPLACE FUNCTION biblioteca.calcular_fecha_devolucion(fecha_prestamo DATE)
   RETURNS DATE AS $$
@@ -538,7 +538,7 @@ HAVING COUNT(*) > 3;
   $$ LANGUAGE plpgsql;
   ```
 
-  ```postgresql
+  ```sql
   -- Función que será utilizada para calcular la feha limite de devolución
   CREATE OR REPLACE FUNCTION biblioteca.calcular_multa() RETURNS TRIGGER AS $$
   DECLARE
@@ -585,7 +585,7 @@ HAVING COUNT(*) > 3;
   $$ LANGUAGE plpgsql;
   ```
 
-  ```postgresql
+  ```sql
   /*
     TRIGGER para que se ejecute la función para
     calcular la multa cuando s actualice la fecha de devolución en prestamo
@@ -598,7 +598,7 @@ HAVING COUNT(*) > 3;
 
 - Considera la posibilidad de incluir una tabla de categorías para los libros y permite que los usuarios busquen libros por categoría.
 
-  ```postgresql
+  ```sql
   SELECT titulo, autor, anio_publicacion
   FROM biblioteca.libros
   WHERE id_categoria = 2;
@@ -607,7 +607,7 @@ HAVING COUNT(*) > 3;
 
 - Diseña consultas que muestren los libros más populares, los usuarios con más multas, etc.
 
-  ```postgresql
+  ```sql
   -- Libros más populares
   SELECT titulo, autor, COUNT(*) AS prestamos
   FROM biblioteca.prestamos
@@ -616,7 +616,7 @@ HAVING COUNT(*) > 3;
   ORDER BY prestamos DESC
   LIMIT 10;
   ```
-  ```postgresql
+  ```sql
   -- Usuarios con más multas
   SELECT nombre, correo, SUM(monto) AS total_multas
   FROM biblioteca.multas
