@@ -77,15 +77,16 @@ CREATE TABLE biblioteca.multas (
 
 ```sql
 CREATE OR REPLACE PROCEDURE biblioteca.agregar_libro(
-  IN titulo VARCHAR(255),
-  IN autor VARCHAR(255),
-  IN anio_publicacion INT,
-  IN inventario INT
+	IN titulo VARCHAR(255),
+	IN autor VARCHAR(255),
+	IN anio_publicacion INT,
+	IN inventario INT,
+	IN id_categoria INT
 )
 AS $$
 BEGIN
-  INSERT INTO biblioteca.libros (titulo, autor, anio_publicacion, inventario)
-  VALUES (titulo, autor, anio_publicacion, inventario);
+  INSERT INTO biblioteca.libros (titulo, autor, anio_publicacion, inventario, id_categoria)
+  VALUES (titulo, autor, anio_publicacion, inventario, id_categoria);
 END;
 $$ LANGUAGE plpgsql;
 ```
@@ -104,15 +105,17 @@ CREATE OR REPLACE PROCEDURE biblioteca.actualizar_libro(
 	IN nuevo_titulo VARCHAR(255),
 	IN nuevo_autor VARCHAR(255),
 	IN nuevo_anio_publicacion INT,
-	IN nuevo_inventario INT
+	IN nuevo_inventario INT,
+	IN nuevo_id_categoria INT
 )
 AS $$
 BEGIN
   UPDATE biblioteca.libros
   SET titulo = nuevo_titulo,
-      autor = nuevo_autor,
-      anio_publicacion = nuevo_anio_publicacion,
-	  inventario = nuevo_inventario
+    autor = nuevo_autor,
+    anio_publicacion = nuevo_anio_publicacion,
+    inventario = nuevo_inventario,
+    id_categoria = nuevo_id_categoria
   WHERE biblioteca.libros.id_libro = libro_id;
 END;
 $$ LANGUAGE plpgsql;
