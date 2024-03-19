@@ -42,7 +42,7 @@ CREATE TABLE biblioteca.libros (
   autor VARCHAR(255) NOT NULL,
   anio_publicacion INT NOT NULL,
   inventario INTEGER NOT NULL DEFAULT 0,
-  id_categoria INT
+  id_categoria INT NOT NULL REFERENCES biblioteca.categorias(id_categoria)
 );
 
 CREATE TABLE biblioteca.usuarios (
