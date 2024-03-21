@@ -93,7 +93,7 @@ $$ LANGUAGE plpgsql;
 #### Ejemplo de uso
 
 ```sql
-CALL biblioteca.agregar_libro('El Principito', 'Antoine de Saint-Exupéry', 1943, 69);
+CALL biblioteca.agregar_libro('El Principito', 'Antoine de Saint-Exupéry', 1943, 69, 1);
 ```
 
 #### stored procedures `actualizar_libro`
@@ -123,7 +123,7 @@ $$ LANGUAGE plpgsql;
 #### Ejemplo de uso
 
 ```sql
-CALL biblioteca.actualizar_libro(1, 'Cien años de soledad', 'Gabriel García Márquez', 1967, 13);
+CALL biblioteca.actualizar_libro(1, 'Cien años de soledad', 'Gabriel García Márquez', 1967, 13, 2);
 ```
 
 #### stored procedures `eliminar_libro`
@@ -606,7 +606,6 @@ HAVING COUNT(*) > 3;
   WHERE id_categoria = 2;
   ```
 
-
 - Diseña consultas que muestren los libros más populares, los usuarios con más multas, etc.
 
   ```sql
@@ -618,6 +617,7 @@ HAVING COUNT(*) > 3;
   ORDER BY prestamos DESC
   LIMIT 10;
   ```
+
   ```sql
   -- Usuarios con más multas
   SELECT nombre, correo, SUM(monto) AS total_multas

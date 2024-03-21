@@ -77,11 +77,11 @@ CREATE TABLE biblioteca.multas (
 
 ```sql
 CREATE OR REPLACE PROCEDURE biblioteca.agregar_libro(
-	IN titulo VARCHAR(255),
-	IN autor VARCHAR(255),
-	IN anio_publicacion INT,
-	IN inventario INT,
-	IN id_categoria INT
+  IN titulo VARCHAR(255),
+  IN autor VARCHAR(255),
+  IN anio_publicacion INT,
+  IN inventario INT,
+  IN id_categoria INT
 )
 AS $$
 BEGIN
@@ -94,19 +94,19 @@ $$ LANGUAGE plpgsql;
 #### Ejemplo de uso
 
 ```sql
-CALL biblioteca.agregar_libro('El Principito', 'Antoine de Saint-Exupéry', 1943, 69);
+CALL biblioteca.agregar_libro('El Principito', 'Antoine de Saint-Exupéry', 1943, 69, 1);
 ```
 
 #### stored procedures `actualizar_libro`
 
 ```sql
 CREATE OR REPLACE PROCEDURE biblioteca.actualizar_libro(
-	IN libro_id INT,
-	IN nuevo_titulo VARCHAR(255),
-	IN nuevo_autor VARCHAR(255),
-	IN nuevo_anio_publicacion INT,
-	IN nuevo_inventario INT,
-	IN nuevo_id_categoria INT
+  IN libro_id INT,
+  IN nuevo_titulo VARCHAR(255),
+  IN nuevo_autor VARCHAR(255),
+  IN nuevo_anio_publicacion INT,
+  IN nuevo_inventario INT,
+  IN nuevo_id_categoria INT
 )
 AS $$
 BEGIN
@@ -124,7 +124,7 @@ $$ LANGUAGE plpgsql;
 #### Ejemplo de uso
 
 ```sql
-CALL biblioteca.actualizar_libro(1, 'Cien años de soledad', 'Gabriel García Márquez', 1967, 13);
+CALL biblioteca.actualizar_libro(1, 'Cien años de soledad', 'Gabriel García Márquez', 1967, 13, 3);
 ```
 
 #### stored procedures `eliminar_libro`
@@ -607,7 +607,6 @@ HAVING COUNT(*) > 3;
   WHERE id_categoria = 2;
   ```
 
-
 - Diseña consultas que muestren los libros más populares, los usuarios con más multas, etc.
 
   ```sql
@@ -619,6 +618,7 @@ HAVING COUNT(*) > 3;
   ORDER BY prestamos DESC
   LIMIT 10;
   ```
+
   ```sql
   -- Usuarios con más multas
   SELECT nombre, correo, SUM(monto) AS total_multas
