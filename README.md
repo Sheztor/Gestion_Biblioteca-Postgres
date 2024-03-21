@@ -70,6 +70,8 @@ CREATE TABLE biblioteca.multas (
 
 ### 2. Stored Procedures y Funciones
 
+[Realiza el insert de datos primero](####`Inserts`)
+
 - 2.1 Crea stored procedures para agregar, actualizar y eliminar libros y usuarios.
 
 #### stored procedures `agregar_libro`
