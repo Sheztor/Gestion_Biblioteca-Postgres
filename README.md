@@ -268,7 +268,7 @@ INSERT INTO biblioteca.libros (id_libro, titulo, autor, anio_publicacion, invent
 (2, 'Cien años de soledad', 'Gabriel García Márquez', 1967, 6, 4),
 (3, '1984', 'George Orwell', 1949, 8, 3),
 (4, 'El nombre de la rosa', 'Umberto Eco', 1980, 2, 1),
-(5, 'El Gran Gatsby', 'F. Scott Fitzgerald', 2013, 69),
+(5, 'El Gran Gatsby', 'F. Scott Fitzgerald', 2013, 69, 4),
 (6, 'Cien años de soledad', 'Gabriel García Márquez', 2011, 49, 5),
 (7, 'Los juegos del hambre', 'Suzanne Collins', 2010, 100, 7),
 (8, 'Ready Player One', 'Ernest Cline', 2012, 26, 3),
